@@ -1,0 +1,10 @@
+D:\Projects\upwork\Alexey\Solution\Auomation.Consumer\Automation.Core\bin\Debug\Automation.Core.exe.config
+D:\Projects\upwork\Alexey\Solution\Auomation.Consumer\Automation.Core\bin\Debug\Automation.Core.exe
+D:\Projects\upwork\Alexey\Solution\Auomation.Consumer\Automation.Core\bin\Debug\Automation.Core.pdb
+D:\Projects\upwork\Alexey\Solution\Auomation.Consumer\Automation.Core\bin\Debug\System.Net.Http.dll
+D:\Projects\upwork\Alexey\Solution\Auomation.Consumer\Automation.Core\bin\Debug\System.Net.Http.xml
+D:\Projects\upwork\Alexey\Solution\Auomation.Consumer\Automation.Core\obj\Debug\Automation.Core.csprojAssemblyReference.cache
+D:\Projects\upwork\Alexey\Solution\Auomation.Consumer\Automation.Core\obj\Debug\Automation.Core.csproj.CoreCompileInputs.cache
+D:\Projects\upwork\Alexey\Solution\Auomation.Consumer\Automation.Core\obj\Debug\Automation.Core.csproj.CopyComplete
+D:\Projects\upwork\Alexey\Solution\Auomation.Consumer\Automation.Core\obj\Debug\Automation.Core.exe
+D:\Projects\upwork\Alexey\Solution\Auomation.Consumer\Automation.Core\obj\Debug\Automation.Core.pdb
