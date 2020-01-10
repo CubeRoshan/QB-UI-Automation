@@ -8,3 +8,8 @@ D:\Projects\upwork\Alexey\Solution\Auomation.Consumer\Automation.Core\obj\Debug\
 D:\Projects\upwork\Alexey\Solution\Auomation.Consumer\Automation.Core\obj\Debug\Automation.Core.csproj.CopyComplete
 D:\Projects\upwork\Alexey\Solution\Auomation.Consumer\Automation.Core\obj\Debug\Automation.Core.exe
 D:\Projects\upwork\Alexey\Solution\Auomation.Consumer\Automation.Core\obj\Debug\Automation.Core.pdb
+D:\Projects\upwork\Alexey\Solution\Auomation.Consumer\Automation.Core\bin\Debug\Castle.Core.dll
+D:\Projects\upwork\Alexey\Solution\Auomation.Consumer\Automation.Core\bin\Debug\TestStack.White.dll
+D:\Projects\upwork\Alexey\Solution\Auomation.Consumer\Automation.Core\bin\Debug\Castle.Core.xml
+D:\Projects\upwork\Alexey\Solution\Auomation.Consumer\Automation.Core\bin\Debug\TestStack.White.pdb
+D:\Projects\upwork\Alexey\Solution\Auomation.Consumer\Automation.Core\bin\Debug\TestStack.White.xml

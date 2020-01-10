@@ -1,135 +1,90 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Automation;
 using System.Windows.Forms;
+using TestStack.White;
+using TestStack.White.Factory;
+using TestStack.White.UIItems.Finders;
+using TestStack.White.UIItems.WindowItems;
+using TestStack.White.UIItems.WindowStripControls;
+//using System.Windows.Forms;
 
 namespace Automation.Core
 {
     class Program
     {
+
         static void Main(string[] args)
         {
-            Process proc = Process.GetProcessesByName("QBW32")[0];
+            Process proc = Process.GetProcessesByName("QBW32").FirstOrDefault();
 
-            Thread.Sleep(1000);
-            // Attach to the main window. 
-            AutomationElement rootElement = AutomationElement.FromHandle(proc.MainWindowHandle);
+            TestStack.White.Application app = TestStack.White.Application.Attach(proc);
 
-            // Create the AndCondition to find the menuBar. 
-            AndCondition menuBarFind =
-                new AndCondition(
-                    new PropertyCondition(
-                        AutomationElement.ControlTypeProperty, ControlType.MenuBar),
-                    new PropertyCondition(
-                        AutomationElement.AutomationIdProperty, "MenuBar"));
+            SearchCriteria sc = SearchCriteria.ByClassName("MauiFrame");
 
-            // Find the menuBar, which is a child of the main window.
-            AutomationElement menuBarElement = rootElement.FindFirst(TreeScope.Children, menuBarFind);
+            var mainWindow = app.GetWindow(sc, InitializeOption.WithCache);
 
-            //Create the AndCondition to find the File menu.
-            AndCondition fileMenuEmployee = new AndCondition(
-                new PropertyCondition(
-                    AutomationElement.ControlTypeProperty, ControlType.MenuItem),
-                new PropertyCondition(AutomationElement.AutomationIdProperty, "Item 10"));
+            mainWindow.Focus();
 
-            // Find the File menu.
-            AutomationElement employeeMenuElement = menuBarElement.FindFirst(TreeScope.Children, fileMenuEmployee);
+            SendKeys.SendWait("%+{y}{P}{U}");
 
-            // Get the control pattern for ExpandCollapse and do the
-            // Expand to get the children.
+            Thread.Sleep(3000);
 
-            ExpandCollapseMenuItem(employeeMenuElement);
+            var modelWindows = mainWindow.ModalWindows()
+                .Where(w => w.Title == "Enter Payroll Information")
+                .FirstOrDefault();
+
+            //var table = GetTableElement(modelWindows);
+
+            //AutomationElement elm = modelWindows
+            //    .GetElement(SearchCriteria.ByControlType(ControlType.HeaderItem));
+
+            //SearchCriteria tableSearch = SearchCriteria.ByControlType(ControlType.HeaderItem);
+
+
+            //var table = modelWindows.Get<TestStack.White.UIItems.TableItems.TableHeader>(tableSearch);
+
+            var x = 0;
         }
 
-        ///--------------------------------------------------------------------
+        // -------------------------------------------------------------------
         /// <summary>
-        /// Obtains an ExpandCollapsePattern control pattern from an 
-        /// automation element.
+        /// Obtain the table control of interest from the target application.
         /// </summary>
-        /// <param name="targetControl">
-        /// The automation element of interest.
+        /// <param name="targetApp">
+        /// The target application.
         /// </param>
         /// <returns>
-        /// A ExpandCollapsePattern object.
+        /// An AutomationElement representing a table control.
         /// </returns>
-        ///--------------------------------------------------------------------
-        private static ExpandCollapsePattern GetExpandCollapsePattern(
-            AutomationElement targetControl)
+        /// -------------------------------------------------------------------
+        private static AutomationElement GetTableElement(AutomationElement targetApp)
         {
-            ExpandCollapsePattern expandCollapsePattern = null;
+            // The control type we're looking for; in this case 'Document'
+            PropertyCondition cond1 =
+                new PropertyCondition(
+                AutomationElement.ControlTypeProperty,
+                ControlType.Table);
 
-            try
-            {
-                expandCollapsePattern =
-                    targetControl.GetCurrentPattern(
-                    ExpandCollapsePattern.Pattern)
-                    as ExpandCollapsePattern;
-            }
-            // Object doesn't support the ExpandCollapsePattern control pattern.
-            catch (InvalidOperationException)
-            {
-                return null;
-            }
+            // The control pattern of interest; in this case 'TextPattern'.
+            PropertyCondition cond2 =
+                new PropertyCondition(
+                AutomationElement.IsTablePatternAvailableProperty,
+                true);
 
-            return expandCollapsePattern;
+            AndCondition tableCondition = new AndCondition(cond1, cond2);
+
+            AutomationElement targetTableElement =
+                targetApp.FindFirst(TreeScope.Descendants, tableCondition);
+
+            // If targetTableElement is null then a suitable table control 
+            // was not found.
+            return targetTableElement;
         }
 
-        ///--------------------------------------------------------------------
-        /// <summary>
-        /// Programmatically expand or collapse a menu item.
-        /// </summary>
-        /// <param name="menuItem">
-        /// The target menu item.
-        /// </param>
-        ///--------------------------------------------------------------------
-        private static void ExpandCollapseMenuItem(
-            AutomationElement menuItem)
-        {
-            if (menuItem == null)
-            {
-                throw new ArgumentNullException(
-                    "AutomationElement argument cannot be null.");
-            }
-
-            ExpandCollapsePattern expandCollapsePattern =
-                GetExpandCollapsePattern(menuItem);
-
-            if (expandCollapsePattern == null)
-            {
-                return;
-            }
-
-            if (expandCollapsePattern.Current.ExpandCollapseState ==
-                ExpandCollapseState.LeafNode)
-            {
-                return;
-            }
-
-            try
-            {
-                if (expandCollapsePattern.Current.ExpandCollapseState == ExpandCollapseState.Expanded)
-                {
-                    // Collapse the menu item.
-                    expandCollapsePattern.Collapse();
-                }
-                else if (expandCollapsePattern.Current.ExpandCollapseState == ExpandCollapseState.Collapsed ||
-                    expandCollapsePattern.Current.ExpandCollapseState == ExpandCollapseState.PartiallyExpanded)
-                {
-                    // Expand the menu item.
-                    expandCollapsePattern.Expand();
-                }
-            }
-            // Control is not enabled
-            catch (ElementNotEnabledException e)
-            {
-                // TO DO: error handling.
-            }
-            // Control is unable to perform operation.
-            catch (InvalidOperationException e)
-            {
-                // TO DO: error handling.
-            }
-        }
     }
 }
